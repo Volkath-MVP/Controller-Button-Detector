@@ -44,5 +44,9 @@ while running:
             if event.button == 6:
                running = False
                print("Você saiu com sucesso!")
+        elif event.type == pg.JOYAXISMOTION:
+            print(f"Eixo {event.axis} movido: {event.value}")
+        elif event.type == pg.JOYHATMOTION:
+            print(f"D-pad: {event.value}")
     pg.display.flip()
 pg.quit()
