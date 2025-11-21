@@ -13,22 +13,28 @@ BLACK= (0, 0, 0)
 running = True
 message_assistant = True
 message_assistant1 = True
+new_controller = False
+controller_get = None
 def draw_controller_game():
     root.fill(BLACK)
 def controller_detected():
-    global message_assistant, message_assistant1
+    global message_assistant, message_assistant1, new_controller, controller_get
     if pg.joystick.get_count() == 0 and message_assistant:
         print("❌ Nenhum controle detectado!")
         message_assistant= False
     elif pg.joystick.get_count() == 1 and not message_assistant or pg.joystick.get_count() == 1 and message_assistant and message_assistant1:
-        controle = pg.joystick.Joystick(0)
-        controle.init()
-        print(f"✅ Controle detectado: {controle.get_name()}")
+        controller_get = pg.joystick.Joystick(0)
+        print(f"✅ Controle detectado: {controller_get.get_name()}")
         print("Pressione botões para ver os eventos...")
         message_assistant = True
         message_assistant1 = False
+        new_controller = True
 while running:
     controller_detected()
+    if new_controller == True:
+        controller = controller_get
+        controller.init()
+        new_controller = False
     draw_controller_game()
     for event in pg.event.get():
         if event.type == pg.QUIT:
