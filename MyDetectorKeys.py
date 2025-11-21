@@ -12,19 +12,21 @@ pg.display.set_caption("AZ Controller Keys")
 BLACK= (0, 0, 0)
 running = True
 message_assistant = True
+message_assistant1 = True
 def draw_controller_game():
     root.fill(BLACK)
 def controller_detected():
-    global message_assistant
+    global message_assistant, message_assistant1
     if pg.joystick.get_count() == 0 and message_assistant:
         print("❌ Nenhum controle detectado!")
         message_assistant= False
-    elif pg.joystick.get_count() == 1 and not message_assistant:
+    elif pg.joystick.get_count() == 1 and not message_assistant or pg.joystick.get_count() == 1 and message_assistant and message_assistant1:
         controle = pg.joystick.Joystick(0)
         controle.init()
         print(f"✅ Controle detectado: {controle.get_name()}")
         print("Pressione botões para ver os eventos...")
         message_assistant = True
+        message_assistant1 = False
 while running:
     controller_detected()
     draw_controller_game()
@@ -35,5 +37,6 @@ while running:
             print(f"🎮 Botão pressionado: {event.button}")
             if event.button == 6:
                running = False
+               print("Você saiu com sucesso!")
     pg.display.flip()
 pg.quit()
