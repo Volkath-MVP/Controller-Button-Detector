@@ -1,4 +1,6 @@
 import pygame as pg
+import os
+import sys
 #Inicializa o pygame e os módulos necessários
 pg.init()
 pg.joystick.init()
@@ -15,8 +17,15 @@ message_assistant = True
 message_assistant1 = True
 new_controller = False
 controller_get = None
+def get_path_file():
+    if getattr(sys, 'frozen', False):
+        return sys._MEIPASS
+    else:
+        return os.path.dirname(__file__)
 def draw_controller_game():
     root.fill(BLACK)
+    joystick_center = pg.image.load(os.path.join(base_path, "controller_sprites", "joystick_normal.png"))
+    root.blit(joystick_center, (50, 50))
 def controller_detected():
     global message_assistant, message_assistant1, new_controller, controller_get
     if pg.joystick.get_count() == 0 and message_assistant:
@@ -30,6 +39,7 @@ def controller_detected():
         message_assistant1 = False
         new_controller = True
 while running:
+    base_path = get_path_file()
     controller_detected()
     if new_controller == True:
         controller = controller_get
